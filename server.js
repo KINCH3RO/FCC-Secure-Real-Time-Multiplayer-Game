@@ -9,6 +9,9 @@ const runner = require('./test-runner.js');
 const collectible = require('./public/Collectible.mjs')
 const helmet = require('helmet')
 const app = express();
+const cors = require('cors');
+app.use(cors({origin: '*'})); 
+app.use(bodyParser.urlencoded({ extended: true }));
 //helmet security
 app.use(helmet.noSniff())
 app.use(helmet.xssFilter())
@@ -59,7 +62,7 @@ io.on("connection", socket => {
   socket.on("disconnect", () => {
     Players.splice(Players.indexOf(Players.find(x => x.id == socket.id)), 1)
     io.emit("playerLeft", socket.id)
-    console.log("player disconnected with id " + socket.id);
+   // console.log("player disconnected with id " + socket.id);
 
   })
   socket.on("addPlayer", (data) => {
